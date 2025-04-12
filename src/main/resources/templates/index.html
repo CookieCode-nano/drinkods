@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飲料訂購系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        input[type="text"], textarea, button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>公司飲料訂購系統</h1>
+
+    <!-- 訂單提交表單 -->
+    <h2>新增訂單</h2>
+    <form id="orderForm">
+        <label for="drinkName">飲料名稱：</label>
+        <input type="text" id="drinkName" name="drinkName" placeholder="輸入飲料名稱">
+
+        <label for="ordererName">訂購人名稱：</label>
+        <input type="text" id="ordererName" name="ordererName" placeholder="輸入訂購人名稱">
+
+        <label for="customizations">特製內容：</label>
+        <textarea id="customizations" name="customizations" placeholder="輸入特製內容"></textarea>
+
+        <button type="submit">提交訂單</button>
+    </form>
+
+    <!-- 訂單記錄 -->
+    <h2>訂單記錄</h2>
+    <table id="orderTable">
+        <thead>
+            <tr>
+                <th>飲料名稱</th>
+                <th>訂購人名稱</th>
+                <th>特製內容</th>
+                <th>訂單時間</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 訂單記錄項目將動態插入 -->
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const drinkName = document.getElementById('drinkName').value.trim();
+            const ordererName = document.getElementById('ordererName').value.trim();
+            const customizations = document.getElementById('customizations').value.trim();
+
+            // 表單驗證
+            if (!drinkName || !ordererName) {
+                alert('飲料名稱和訂購人名稱為必填項目！');
+                return;
+            }
+
+            try {
+                // 發送資料到後端
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        drinkName,
+                        ordererName,
+                        customizations
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('提交訂單失敗！');
+                }
+
+                const newOrder = await response.json();
+
+                // 更新表格
+                const table = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
+                const newRow = table.insertRow();
+                newRow.innerHTML = `
+                    <td>${newOrder.drinkName}</td>
+                    <td>${newOrder.ordererName}</td>
+                    <td>${newOrder.customizations}</td>
+                    <td>${newOrder.timestamp}</td>
+                `;
+
+                // 清空表單
+                document.getElementById('orderForm').reset();
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
