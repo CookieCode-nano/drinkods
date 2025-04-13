@@ -14,43 +14,51 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tch.drinkods.DTO.OrderRequest;
+import com.tch.drinkods.Entity.Drink;
 import com.tch.drinkods.Service.DrinkService;
-import com.tch.drinkods.entity.Drink;
 
 @RestController
-@RequestMapping("/drinks")
+@RequestMapping("/api")
 public class DrinkController {
     @Autowired
     private DrinkService drinkService;
 
     // 新增飲料
-    @PostMapping
+    @PostMapping("/drinks")
     public ResponseEntity<Drink> createDrink(@RequestBody Drink drink) {
         return new ResponseEntity<>(drinkService.createDrink(drink), HttpStatus.CREATED);
     }
 
     // 查詢所有飲料
-    @GetMapping
+    @GetMapping("/drinks")
     public List<Drink> getAllDrinks() {
         return drinkService.getAllDrinks();
     }
 
     // 根據ID查找飲料
-    @GetMapping("/{id}")
+    @GetMapping("/drinks/{id}")
     public ResponseEntity<Drink> getDrinkById(@PathVariable Long id) {
         return new ResponseEntity<>(drinkService.getDrinkById(id), HttpStatus.OK);
     }
 
     // 更新飲料
-    @PutMapping("/{id}")
+    @PutMapping("/drinks/{id}")
     public ResponseEntity<Drink> updateDrink(@PathVariable Long id, @RequestBody Drink drink) {
         return new ResponseEntity<>(drinkService.updateDrink(id, drink), HttpStatus.OK);
     }
 
     // 刪除飲料
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/drinks/{id}")
     public ResponseEntity<Void> deleteDrink(@PathVariable Long id) {
         drinkService.deleteDrink(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/order")
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
+        // 處理邏輯
+        System.out.println("Received order: " + orderRequest);
+        return ResponseEntity.ok("Order received");
     }
 }

@@ -1,4 +1,4 @@
-package com.tch.drinkods.entity;
+package com.tch.drinkods.Entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.tch.drinkods.entity.Orderer;
+import com.tch.drinkods.Entity.Orderer;
 
 @Repository
 public interface OrdererRepository extends JpaRepository<Orderer, Long> {
