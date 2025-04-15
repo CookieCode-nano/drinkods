@@ -72,6 +72,33 @@
     </table>
 
     <script>
+        // 頁面加載時獲取訂單資料
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('/api/orders');
+                if (!response.ok) {
+                    throw new Error('無法獲取訂單資料！');
+                }
+
+                const orders = await response.json();
+                const table = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
+
+                // 將訂單資料插入表格
+                orders.forEach(order => {
+                    const newRow = table.insertRow();
+                    newRow.innerHTML = `
+                        <td>${order.drink.name}</td>
+                        <td>${order.orderer.name}</td>
+                        <td>${order.customizations}</td>
+                        <td>${order.timestamp}</td>
+                    `;
+                });
+            } catch (error) {
+                console.error(error.message);
+            }
+        });
+
+        // 提交新訂單
         document.getElementById('orderForm').addEventListener('submit', async function(event) {
             event.preventDefault();
 
@@ -79,14 +106,12 @@
             const ordererName = document.getElementById('ordererName').value.trim();
             const customizations = document.getElementById('customizations').value.trim();
 
-            // 表單驗證
             if (!drinkName || !ordererName) {
                 alert('飲料名稱和訂購人名稱為必填項目！');
                 return;
             }
 
             try {
-                // 發送資料到後端
                 const response = await fetch('/api/order', {
                     method: 'POST',
                     headers: {
@@ -109,8 +134,8 @@
                 const table = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
                 const newRow = table.insertRow();
                 newRow.innerHTML = `
-                    <td>${newOrder.drinkName}</td>
-                    <td>${newOrder.ordererName}</td>
+                    <td>${newOrder.drink.name}</td>
+                    <td>${newOrder.orderer.name}</td>
                     <td>${newOrder.customizations}</td>
                     <td>${newOrder.timestamp}</td>
                 `;

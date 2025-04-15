@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tch.drinkods.DTO.OrderRequest;
+import com.tch.drinkods.DTO.OrderResponse;
 import com.tch.drinkods.Entity.Drink;
 import com.tch.drinkods.Service.DrinkService;
+import com.tch.drinkods.Service.OrderService;
 
 @RestController
 @RequestMapping("/api")
 public class DrinkController {
     @Autowired
     private DrinkService drinkService;
+
+    @Autowired
+    private OrderService orderService;
 
     // 新增飲料
     @PostMapping("/drinks")
@@ -55,10 +60,17 @@ public class DrinkController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // 新增訂單
     @PostMapping("/order")
-    public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
-        // 處理邏輯
-        System.out.println("Received order: " + orderRequest);
-        return ResponseEntity.ok("Order received");
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
+        OrderResponse orderResponse = orderService.createOrder(orderRequest);
+        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
+    }
+
+    // 查詢所有訂單
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        List<OrderResponse> orders = orderService.getAllOrders();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 }

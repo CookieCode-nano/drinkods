@@ -7,13 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+//訂單類別
 
 @Entity
-public class Order {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+//關聯ID
     @ManyToOne
     @JoinColumn(name = "drink_id", nullable = false)
     private Drink drink;
@@ -23,14 +24,14 @@ public class Order {
     private Orderer orderer;
 
     private String customizations;
-
+//時間戳記
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
     // Constructors, Getters, and Setters
-    public Order() {}
+    public Orders() {}
 
-    public Order(Drink drink, Orderer orderer, String customizations, LocalDateTime timestamp) {
+    public Orders(Drink drink, Orderer orderer, String customizations, LocalDateTime timestamp) {
         this.drink = drink;
         this.orderer = orderer;
         this.customizations = customizations;
@@ -72,7 +73,7 @@ public class Order {
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
-
+//訂單時間戳記
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
