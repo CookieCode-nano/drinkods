@@ -19,22 +19,26 @@ import com.tch.drinkods.Service.OrderService;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final DrinkRepository drinkRepository;
+    private final OrdererRepository ordererRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    private DrinkRepository drinkRepository;
-
-    @Autowired
-    private OrdererRepository ordererRepository;
+    public OrderServiceImpl(DrinkRepository drinkRepository, OrdererRepository ordererRepository, OrderRepository orderRepository) {
+        this.drinkRepository = drinkRepository;
+        this.ordererRepository = ordererRepository;
+        this.orderRepository = orderRepository;
+    }
 
     @Override
     public OrderResponse createOrder(OrderRequest orderRequest) {
-        // 查找飲料
+        // 查找或新增飲料
         Drink drink = drinkRepository.findByName(orderRequest.getDrinkName())
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("飲料不存在"));
+                .orElseGet(() -> {
+                    Drink newDrink = new Drink(orderRequest.getDrinkName());
+                    return drinkRepository.save(newDrink);
+                });
 
         // 查找或新增訂購人
         Orderer orderer = ordererRepository.findByName(orderRequest.getOrdererName())

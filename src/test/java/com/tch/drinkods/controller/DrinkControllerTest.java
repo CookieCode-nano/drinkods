@@ -43,61 +43,6 @@ class DrinkControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // 測試新增飲料
-    @Test
-    void testCreateDrink() {
-        Drink drink = new Drink("Latte", "No Sugar");
-        when(drinkService.createDrink(drink)).thenReturn(drink);
-
-        ResponseEntity<Drink> response = drinkController.createDrink(drink);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody()).isEqualTo(drink);
-        verify(drinkService, times(1)).createDrink(drink);
-    }
-
-    // 測試查詢所有飲料
-    @Test
-    void testGetAllDrinks() {
-        List<Drink> drinks = Arrays.asList(
-                new Drink("Latte", "No Sugar"),
-                new Drink("Mocha", "Extra Chocolate"));
-        when(drinkService.getAllDrinks()).thenReturn(drinks);
-
-        List<Drink> result = drinkController.getAllDrinks();
-
-        assertThat(result).isEqualTo(drinks);
-        verify(drinkService, times(1)).getAllDrinks();
-    }
-
-    // 測試根據ID查找飲料
-    @Test
-    void testGetDrinkById() {
-        Long drinkId = 1L;
-        Drink drink = new Drink("Latte", "No Sugar");
-        when(drinkService.getDrinkById(drinkId)).thenReturn(drink);
-
-        ResponseEntity<Drink> response = drinkController.getDrinkById(drinkId);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(drink);
-        verify(drinkService, times(1)).getDrinkById(drinkId);
-    }
-
-    // 測試更新飲料
-    @Test
-    void testUpdateDrink() {
-        Long drinkId = 1L;
-        Drink updatedDrink = new Drink("Latte", "Less Sugar");
-        when(drinkService.updateDrink(drinkId, updatedDrink)).thenReturn(updatedDrink);
-
-        ResponseEntity<Drink> response = drinkController.updateDrink(drinkId, updatedDrink);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(updatedDrink);
-        verify(drinkService, times(1)).updateDrink(drinkId, updatedDrink);
-    }
-
     @Test
     void testCreateOrder() {
         OrderRequest orderRequest = new OrderRequest("Latte", "John Doe", "No Sugar");

@@ -83,16 +83,25 @@
                 const orders = await response.json();
                 const table = document.getElementById('orderTable').getElementsByTagName('tbody')[0];
 
-                // 將訂單資料插入表格
-                orders.forEach(order => {
-                    const newRow = table.insertRow();
-                    newRow.innerHTML = `
-                        <td>${order.drink.name}</td>
-                        <td>${order.orderer.name}</td>
-                        <td>${order.customizations}</td>
-                        <td>${order.timestamp}</td>
-                    `;
-                });
+                // 如果沒有訂單，顯示「無」
+                if (orders.length === 0) {
+                    const noDataRow = table.insertRow();
+                    const noDataCell = noDataRow.insertCell(0);
+                    noDataCell.colSpan = 4; // 合併所有欄位
+                    noDataCell.textContent = '無';
+                    noDataCell.style.textAlign = 'center';
+                } else {
+                    // 將訂單資料插入表格
+                    orders.forEach(order => {
+                        const newRow = table.insertRow();
+                        newRow.innerHTML = `
+                            <td>${order.drink.name}</td>
+                            <td>${order.orderer.name}</td>
+                            <td>${order.customizations}</td>
+                            <td>${order.timestamp}</td>
+                        `;
+                    });
+                }
             } catch (error) {
                 console.error(error.message);
             }
@@ -122,6 +131,7 @@
                         ordererName,
                         customizations
                     })
+                    
                 });
 
                 if (!response.ok) {

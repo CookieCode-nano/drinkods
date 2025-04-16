@@ -29,36 +29,36 @@ public class DrinkController {
     @Autowired
     private OrderService orderService;
 
-    // 新增飲料
-    @PostMapping("/drinks")
-    public ResponseEntity<Drink> createDrink(@RequestBody Drink drink) {
-        return new ResponseEntity<>(drinkService.createDrink(drink), HttpStatus.CREATED);
-    }
+    // // 新增飲料
+    // @PostMapping("/drinks")
+    // public ResponseEntity<Drink> createDrink(@RequestBody Drink drink) {
+    //     return new ResponseEntity<>(drinkService.createDrink(drink), HttpStatus.CREATED);
+    // }
 
-    // 查詢所有飲料
-    @GetMapping("/drinks")
-    public List<Drink> getAllDrinks() {
-        return drinkService.getAllDrinks();
-    }
+    // // 查詢所有飲料
+    // @GetMapping("/drinks")
+    // public List<Drink> getAllDrinks() {
+    //     return drinkService.getAllDrinks();
+    // }
 
-    // 根據ID查找飲料
-    @GetMapping("/drinks/{id}")
-    public ResponseEntity<Drink> getDrinkById(@PathVariable Long id) {
-        return new ResponseEntity<>(drinkService.getDrinkById(id), HttpStatus.OK);
-    }
+    // // 根據ID查找飲料
+    // @GetMapping("/drinks/{id}")
+    // public ResponseEntity<Drink> getDrinkById(@PathVariable Long id) {
+    //     return new ResponseEntity<>(drinkService.getDrinkById(id), HttpStatus.OK);
+    // }
 
-    // 更新飲料
-    @PutMapping("/drinks/{id}")
-    public ResponseEntity<Drink> updateDrink(@PathVariable Long id, @RequestBody Drink drink) {
-        return new ResponseEntity<>(drinkService.updateDrink(id, drink), HttpStatus.OK);
-    }
+    // // 更新飲料
+    // @PutMapping("/drinks/{id}")
+    // public ResponseEntity<Drink> updateDrink(@PathVariable Long id, @RequestBody Drink drink) {
+    //     return new ResponseEntity<>(drinkService.updateDrink(id, drink), HttpStatus.OK);
+    // }
 
-    // 刪除飲料
-    @DeleteMapping("/drinks/{id}")
-    public ResponseEntity<Void> deleteDrink(@PathVariable Long id) {
-        drinkService.deleteDrink(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    // // 刪除飲料
+    // @DeleteMapping("/drinks/{id}")
+    // public ResponseEntity<Void> deleteDrink(@PathVariable Long id) {
+    //     drinkService.deleteDrink(id);
+    //     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    // }
 
     // 新增訂單
     @PostMapping("/order")
