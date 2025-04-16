@@ -1,8 +1,11 @@
 package com.tch.drinkods.controller;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -14,22 +17,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.tch.drinkods.Controller.DrinkController;
+import com.tch.drinkods.DTO.OrderRequest;
+import com.tch.drinkods.DTO.OrderResponse;
 import com.tch.drinkods.Entity.Drink;
 import com.tch.drinkods.Service.DrinkService;
-
-
-
-
-
-
+import com.tch.drinkods.Service.Impl.OrderServiceImpl;
 
 class DrinkControllerTest {
 
     @Mock
     private DrinkService drinkService;
+    @Mock
+
+    private OrderServiceImpl Orderimpl;
+    
 
     @InjectMocks
     private DrinkController drinkController;
+
+    @Mock
+    private DrinkService orderService;
 
     @BeforeEach
     void setUp() {
@@ -53,9 +60,8 @@ class DrinkControllerTest {
     @Test
     void testGetAllDrinks() {
         List<Drink> drinks = Arrays.asList(
-            new Drink("Latte", "No Sugar"),
-            new Drink("Mocha", "Extra Chocolate")
-        );
+                new Drink("Latte", "No Sugar"),
+                new Drink("Mocha", "Extra Chocolate"));
         when(drinkService.getAllDrinks()).thenReturn(drinks);
 
         List<Drink> result = drinkController.getAllDrinks();
@@ -92,14 +98,17 @@ class DrinkControllerTest {
         verify(drinkService, times(1)).updateDrink(drinkId, updatedDrink);
     }
 
-    // 測試刪除飲料
     @Test
-    void testDeleteDrink() {
-        Long drinkId = 1L;
+    void testCreateOrder() {
+        OrderRequest orderRequest = new OrderRequest("Latte", "John Doe", "No Sugar");
+        OrderResponse orderResponse = new OrderResponse("Latte", "John Doe", "No Sugar", LocalDateTime.now());
+        when(Orderimpl.createOrder(orderRequest)).thenReturn(orderResponse);
 
-        ResponseEntity<Void> response = drinkController.deleteDrink(drinkId);
+        ResponseEntity<OrderResponse> response = drinkController.createOrder(orderRequest);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-        verify(drinkService, times(1)).deleteDrink(drinkId);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isEqualTo(orderResponse);
+        verify(Orderimpl, times(1)).createOrder(orderRequest);
     }
+
 }

@@ -21,4 +21,10 @@ public class HomeControllerTest {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void testBadRequest() throws Exception {
+        mockMvc.perform(get("/invalid-url"))
+                .andExpect(status().isNotFound());
+    }
 }

@@ -5,6 +5,12 @@ public class OrderRequest {
     private String ordererName;
     private String customizations;
 
+    public OrderRequest(String drinkName, String ordererName, String customizations) {
+        this.drinkName = drinkName;
+        this.ordererName = ordererName;
+        this.customizations = customizations;
+    }
+
     // Getters and Setters
     public String getDrinkName() {
         return drinkName;

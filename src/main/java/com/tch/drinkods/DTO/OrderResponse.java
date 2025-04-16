@@ -8,6 +8,13 @@ public class OrderResponse {
     private String customizations;
     private LocalDateTime timestamp;
 
+    public OrderResponse(String drinkName, String ordererName, String customizations, LocalDateTime timestamp) {
+        this.drinkName = drinkName;
+        this.ordererName = ordererName;
+        this.customizations = customizations;
+        this.timestamp = timestamp;
+    }
+
     // Getters and Setters
     public String getDrinkName() {
         return drinkName;
